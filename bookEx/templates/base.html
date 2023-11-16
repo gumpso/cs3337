@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+           Title
+        {% endblock title %}
+    </title>
+    <link href="{% static 'main.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <img src="{% static 'logo.jpg'%}" height="60" width="60" alt="" />
+  <img src="{% static 'banner.jpg'%}" height="60" width="600" alt="" />
+
+ <ul>
+     <li>Menu 1</li>
+     <li>Menu 2</li>
+ </ul>
+   <footer id="footer">
+      2023 Fall Django Project BookEx System
+   </footer>
+</body>
+</html>
