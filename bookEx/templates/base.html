@@ -14,6 +14,17 @@
 <body>
   <header id="header">
       <img src="{% static 'logo.jpg'%}" height="60" width="60" alt="" />
+
+      <span style="float: right;">
+          {% if user.is_authenticated %}
+              {{ user.username }}
+              <a href="{% url 'logout' %}?next=/">Logout</a>
+          {% else %}
+              Not Logged in
+              <a href="{% url 'login' %}?next=/">Login</a>
+          {% endif %}
+      </span>
+
       <img src="{% static 'banner.jpg'%}" height="60" width="600" alt="" />
   </header>
   <aside id="leftsidebar">

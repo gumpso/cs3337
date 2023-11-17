@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-   Display
+   My Books
 {% endblock title %}
 
 {% block sidenav %}
@@ -16,7 +16,7 @@
 
 {% block content %}
 
-<h1 align="center">Display Book Page</h1>
+<h1 align="center">My Books</h1>
 
 <table align="center" border="2" width="400">
     <th>
@@ -27,6 +27,9 @@
     </th>
     <th>
         Book Picture
+    </th>
+    <th>
+        DELETE
     </th>
    {% for book in books %}
      <tr>
@@ -41,6 +44,12 @@
          <td align="center">
               <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
          </td>
+         <td>
+             <a href="book_delete/{{ book.id }}">
+              <img src="{% static 'delete_icon.jpg' %}" height="60" width="60" alt="" />
+             </a>
+         </td>
+
      </tr>
    {% endfor %}
 </table>

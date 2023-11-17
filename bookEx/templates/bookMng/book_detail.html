@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-   Display
+   Detail
 {% endblock title %}
 
 {% block sidenav %}
@@ -16,7 +16,7 @@
 
 {% block content %}
 
-<h1 align="center">Display Book Page</h1>
+<h1 align="center">Book Detail</h1>
 
 <table align="center" border="2" width="400">
     <th>
@@ -28,12 +28,15 @@
     <th>
         Book Picture
     </th>
-   {% for book in books %}
+    <th>
+        Book Poster
+    </th>
+    <th>
+        Book Post Time
+    </th>
      <tr>
          <td>
-             <a href="book_detail/{{ book.id }}">
-                 {{ book.name }}
-             </a>
+             {{ book.name }}
          </td>
          <td>
              {{ book.price }}
@@ -41,8 +44,13 @@
          <td align="center">
               <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
          </td>
+         <td>
+             {{ book.username }}
+         </td>
+         <td>
+             {{ book.publishdate }}
+         </td>
      </tr>
-   {% endfor %}
 </table>
 
 {% endblock content %}
