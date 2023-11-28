@@ -16,3 +16,21 @@ def index(request):
                   )
 
 
+def aboutus(request):
+    #return HttpResponse("<h1> Hello </h1>")
+    return render(request,
+                  'bookMng/aboutus.html',
+                  {
+                      'item_list': MainMenu.objects.all()
+                  }
+                  )
+
+
+def postbook(request):
+    #return HttpResponse("<h1> Hello </h1>")
+    return render(request,
+                  'bookMng/aboutus.html',
+                  {
+                      'item_list': MainMenu.objects.all()
+                  }
+                  )
