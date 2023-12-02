@@ -9,7 +9,7 @@
 #nav li {
     padding-top: 10px;
     padding-bottom: 10px;
-    foot-size: 1em;
+    font-size: 1em;
     list-style-type: none;
     border-bottom: thin solid #5F5F5F;
     color: #4C4C4C;
@@ -21,7 +21,7 @@
 #leftsidebar {
     width: 180px;
     height: 350px;
-    float: left;
+    float: right;
 }
 
 #main {
@@ -42,4 +42,31 @@
     border-top: thin solid #BBBBBB;
     clear: both;
     color: #969696;
+}
+/* Styles for the comments section */
+.comments {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.comment {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.comment .author {
+    font-weight: bold;
+}
+
+.comment .text {
+    margin-top: 5px;
+}
+
+.comment .date {
+    font-size: 0.8em;
+    color: #888;
 }
