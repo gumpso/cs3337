@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
-from django.db.models import Avg
+from django.db.models import Avg# Path: bookEx/bookMng/views.py
 from .models import MainMenu, Book, Comment, Rating, Favorite
 from .forms import BookForm, CommentForm, RatingForm
 
@@ -104,6 +104,7 @@ def book_detail(request, book_id):
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
+        print(data)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.book = book

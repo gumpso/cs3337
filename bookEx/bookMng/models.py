@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 
 class MainMenu(models.Model):
-    item = models.CharField(max_length=200, unique=True)
+    item = models.CharField(max_length=200, unique=True)# Path: bookEx/bookMng/models.py
     link = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -32,7 +32,7 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='ratings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,unique=True)
     score = models.IntegerField(
         default=0,
         validators=[

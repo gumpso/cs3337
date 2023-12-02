@@ -23,7 +23,7 @@
 
     <!-- Rating Form -->
     {% if user.is_authenticated %}
-        <form method="post" action="">
+        <form method="post" action="comment">
             {% csrf_token %}
             {{ rating_form.as_p }}
             <button type="submit" class="btn btn-primary" name="rating">Rate this Book</button>

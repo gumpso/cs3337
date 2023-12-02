@@ -105,11 +105,16 @@ def book_detail(request, book_id):
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
+        print(data)
         if comment_form.is_valid():
+            print("comment_form is valid")
+            new_comment = Comment()#comment_form.save(commit=False)
             new_comment = comment_form.save(commit=False)
             new_comment.book = book
             new_comment.author = request.user  # Set the comment author
+            new_comment.text = comment_form.cleaned_data['text']
             new_comment.save()
+            comments = Comment.objects.filter(book=book)
             return redirect('book_detail', book_id=book.id)
     else:
         comment_form = CommentForm()
@@ -148,6 +153,7 @@ def book_detail(request, book_id):
     comments = Comment.objects.filter(book=book)
     comment_form = CommentForm()  # Initialize comment_form here
     rating_form = RatingForm()    # Initialize rating_form here
+    new_comment = Comment()
 
     if request.method == 'POST':
         if 'comment' in request.POST:

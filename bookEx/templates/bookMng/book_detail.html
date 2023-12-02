@@ -59,8 +59,10 @@
 
     <!-- Comment Form -->
     {% if user.is_authenticated %}
-        <form class="comment-form" method="post">
+        <form class="comment-form" name="comment" method="post">
+            <label for="comment">Comment:</label>
             {% csrf_token %}
+            <input type="hidden" value="comment" name="comment"></textarea>
             {{ comment_form.as_p }}
             <button type="submit" class="btn btn-primary">Add Comment</button>
         </form>

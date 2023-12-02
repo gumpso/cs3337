@@ -32,7 +32,7 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='ratings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,unique=True)
     score = models.IntegerField(
         default=0,
         validators=[
