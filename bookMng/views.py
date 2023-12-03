@@ -9,6 +9,7 @@ from django.db.models import Avg
 from .models import MainMenu, Book, Comment, Rating, Favorite
 from .forms import BookForm, CommentForm, RatingForm
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -73,6 +74,11 @@ def postbook(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
+    """   duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1).values_list('user_id', flat=True)
+        for user_id in duplicate_user_ids:
+            ratings = Rating.objects.filter(user_id=user_id)
+            ratings.delete() """
+    
     books = Book.objects.all()
     for b in books:
         b.pic_path = b.picture.url[14:]
@@ -168,9 +174,18 @@ def book_detail(request, book_id):
             rating_form = RatingForm(data=request.POST)
             if rating_form.is_valid():
                 rating = rating_form.save(commit=False)
-                rating.book = book
-                rating.user = request.user
-                rating.save()
+                ratings=Rating.objects.filter(book=book, user=request.user)
+                if ratings.exists():
+                    rating2 = ratings.first()
+                    rating2.book=book
+                    rating2.user=request.user
+                    rating2.score = rating.score
+                    rating2.save()
+                else:
+                    rating = rating_form.save(commit=False)
+                    rating.book = book
+                    rating.user = request.user# rating = Rating.objects.create(book=book, user=request.user, score=new_score)
+                    rating.save()
                 # Update average rating
                 average = Rating.objects.filter(book=book).aggregate(Avg('score'))['score__avg']
                 book.average_rating = average

@@ -64,7 +64,7 @@
             {% csrf_token %}
             <input type="hidden" value="comment" name="comment"></textarea>
             {{ comment_form.as_p }}
-            <button type="submit" class="btn btn-primary">Add Comment</button>
+            <button type="submit" class="btn btn-primary" name="comment">Add Comment</button>
         </form>
     {% else %}
         <p>You need to be logged in to comment.</p>
