@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm#
+from django.forms import ModelForm
 from .models import Book
 from .models import Comment
 from .models import Rating
@@ -17,7 +17,7 @@ class BookForm(ModelForm):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = Comment# Path: bookEx/bookMng/forms.py
+        model = Comment
         fields = ('text',)
 
 class RatingForm(forms.ModelForm):

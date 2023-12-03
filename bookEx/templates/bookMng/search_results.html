@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+
 {% block sidenav %}
    <!-- This assumes that 'item_list' is passed to the template from the view -->
    {% for item in item_list %}
@@ -32,7 +32,7 @@
                         <p><a href="{{ book.web }}">More Info</a></p>
                         <!-- Display book image if available -->
                         {% if book.picture %}
-                            <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
+                            <img src="{{ book.picture.url }}" alt="{{ book.name }}">
                         {% endif %}
                     </li>
                 {% endfor %}

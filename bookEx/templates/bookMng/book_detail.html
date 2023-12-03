@@ -23,7 +23,7 @@
 
     <!-- Rating Form -->
     {% if user.is_authenticated %}
-        <form method="post" action="">
+        <form method="post" action="comment">
             {% csrf_token %}
             {{ rating_form.as_p }}
             <button type="submit" class="btn btn-primary" name="rating">Rate this Book</button>
@@ -47,9 +47,7 @@
                 <td>{{ book.name }}</td>
                 <td>{{ book.price }}</td>
                 <td align="center">
-                     {% if book.picture %}
-                            <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
-                        {% endif %}
+                    <img src="{% static book.pic_path %}" height="60" width="60" alt="{{ book.name }}" />
                 </td>
                 <td>{{ book.username }}</td>
                 <td>{{ book.publishdate }}</td>
@@ -59,10 +57,8 @@
 
     <!-- Comment Form -->
     {% if user.is_authenticated %}
-        <form class="comment-form" name="comment" method="post">
-            <label for="comment">Comment:</label>
+        <form class="comment-form" method="post">
             {% csrf_token %}
-            <input type="hidden" value="comment" name="comment"></textarea>
             {{ comment_form.as_p }}
             <button type="submit" class="btn btn-primary" name="comment">Add Comment</button>
         </form>
