@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 
 class MainMenu(models.Model):
-    item = models.CharField(max_length=200, unique=True)
+    item = models.CharField(max_length=200, unique=True)# Path: bookEx/bookMng/models.py
     link = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
