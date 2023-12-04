@@ -47,7 +47,7 @@
                 <td>{{ book.name }}</td>
                 <td>{{ book.price }}</td>
                 <td align="center">
-                    <img src="{% static book.pic_path %}" height="60" width="60" alt="{{ book.name }}" />
+                    <img src=" {{book.picture.url|cut:"/bookEx"}} " height="60" width="60" alt="{{ book.name }}" />
                 </td>
                 <td>{{ book.username }}</td>
                 <td>{{ book.publishdate }}</td>
