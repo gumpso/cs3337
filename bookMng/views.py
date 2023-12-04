@@ -5,10 +5,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
-from django.db.models import Avg# Path: bookEx/bookMng/views.py
+from django.db.models import Avg
 from .models import MainMenu, Book, Comment, Rating, Favorite
 from .forms import BookForm, CommentForm, RatingForm
-from django.db.models import Count
+from django.contrib.auth import get_user_model
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -28,7 +28,6 @@ def search_books(request):
         'query': query
     })
 
-@login_required(login_url=reverse_lazy('login'))
 def index(request):
     return render(request,
                   'bookMng/index.html',
@@ -73,11 +72,6 @@ def postbook(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
-    """   duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1).values_list('user_id', flat=True)
-        for user_id in duplicate_user_ids:
-            ratings = Rating.objects.filter(user_id=user_id)
-            ratings.delete() """
-    
     books = Book.objects.all()
     for b in books:
         b.pic_path = b.picture.url[14:]
@@ -112,10 +106,14 @@ def book_detail(request, book_id):
         comment_form = CommentForm(data=request.POST)
         print(data)
         if comment_form.is_valid():
+            print("comment_form is valid")
+            new_comment = Comment()#comment_form.save(commit=False)
             new_comment = comment_form.save(commit=False)
             new_comment.book = book
             new_comment.author = request.user  # Set the comment author
+            new_comment.text = comment_form.cleaned_data['text']
             new_comment.save()
+            comments = Comment.objects.filter(book=book)
             return redirect('book_detail', book_id=book.id)
     else:
         comment_form = CommentForm()
@@ -154,6 +152,7 @@ def book_detail(request, book_id):
     comments = Comment.objects.filter(book=book)
     comment_form = CommentForm()  # Initialize comment_form here
     rating_form = RatingForm()    # Initialize rating_form here
+    new_comment = Comment()
 
     if request.method == 'POST':
         if 'comment' in request.POST:
@@ -168,18 +167,9 @@ def book_detail(request, book_id):
             rating_form = RatingForm(data=request.POST)
             if rating_form.is_valid():
                 rating = rating_form.save(commit=False)
-                ratings=Rating.objects.filter(book=book, user=request.user)
-                if ratings.exists():
-                    rating2 = ratings.first()
-                    rating2.book=book
-                    rating2.user=request.user
-                    rating2.score = rating.score
-                    rating2.save()
-                else:
-                    rating = rating_form.save(commit=False)
-                    rating.book = book
-                    rating.user = request.user# rating = Rating.objects.create(book=book, user=request.user, score=new_score)
-                    rating.save()
+                rating.book = book
+                rating.user = request.user
+                rating.save()
                 # Update average rating
                 average = Rating.objects.filter(book=book).aggregate(Avg('score'))['score__avg']
                 book.average_rating = average
@@ -216,3 +206,46 @@ def view_favorites(request):
         'favorites': favorited_books
     })
 
+@login_required(login_url=reverse_lazy('login'))
+def requestbook(request):
+    # return HttpResponse("<h1 align='center'>Hello World</h1>")
+    # return render(request, 'bookMng/displaybooks.html')
+    return render(request,
+                  'bookMng/requestbook.html',
+                  {
+                      'item_list': MainMenu.objects.all()
+                  }
+                  )
+
+@login_required(login_url=reverse_lazy('login'))
+def user_detail(request, user_id):
+    User = get_user_model()
+    user = User.objects.get(id=user_id)
+    return render(request,
+                  'bookMng/user_detail.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'user': user
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def displayusers(request):
+    User = get_user_model()
+    users = User.objects.all()
+    return render(request,
+                  'bookMng/displayusers.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'users': users
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def myprofile(request):
+    User = get_user_model()
+    user = request.user
+    return render(request,
+                  'bookMng/myprofile.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'user': user
+                  })
