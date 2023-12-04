@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from django.db.models import Count
+
 
 class MainMenu(models.Model):
     item = models.CharField(max_length=200, unique=True)
@@ -17,6 +19,8 @@ class Book(models.Model):
     picture = models.FileField(upload_to='bookEx/static/uploads')
     pic_path = models.CharField(max_length=300, editable=False, blank=True)
     username = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
+    #average_rating = models.FloatField(default=0)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True)
 
     def __str__(self):
         return str(self.id)
@@ -42,7 +46,12 @@ class Rating(models.Model):
     )
 
     def __str__(self):
-        return f"Rating: {self.score} by {self.user.username} for {self.book.name}"
+        # return f"Rating: {self.score} by {self.user.username} for {self.book.name}"
+    
+        if self.score is not None:
+            return f"Rating: {self.score} by {self.user.username} for {self.book.name}"
+        else:
+            return f"Rating: n/a"
 
 
 class Favorite(models.Model):
