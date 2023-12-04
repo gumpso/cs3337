@@ -15,7 +15,7 @@
 {% endblock sidenav %}
 
 {% block content %}
-<div class="book-detail">
+<div class="book-detail" align="center">
     <h1 align="center">{{ book.name }}</h1>
 
     <!-- Display average rating -->
@@ -47,7 +47,7 @@
                 <td>{{ book.name }}</td>
                 <td>{{ book.price }}</td>
                 <td align="center">
-                    <img src=" {{book.picture.url|cut:"/bookEx"}} " height="60" width="60" alt="{{ book.name }}" />
+                    <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
                 </td>
                 <td>{{ book.username }}</td>
                 <td>{{ book.publishdate }}</td>
@@ -57,17 +57,19 @@
 
     <!-- Comment Form -->
     {% if user.is_authenticated %}
-        <form class="comment-form" method="post">
+        <form class="comment-form" name="comment" method="post">
+            <label for="comment">Comment:</label>
             {% csrf_token %}
+            <input type="hidden" value="comment" name="comment"></textarea>
             {{ comment_form.as_p }}
-            <button type="submit" class="btn btn-primary" name="comment">Add Comment</button>
+            <button type="submit" class="btn btn-primary">Add Comment</button>
         </form>
     {% else %}
         <p>You need to be logged in to comment.</p>
     {% endif %}
 
     <!-- List Comments -->
-    <div class="comments">
+    <div class="comments" align="center" style="display: inline-block; width: 300px; border: 1px solid #000; text-align: center;">
         <h3>Comments:</h3>
         {% for comment in comments %}
             <div class="comment">
@@ -79,8 +81,10 @@
             <p>No comments yet.</p>
         {% endfor %}
     </div>
-    <a href="{% url 'add_to_favorites' book.id %}">Add to Favorites</a>
-<a href="{% url 'remove_from_favorites' book.id %}">Remove from Favorites</a>
+    <div align="center" style=" margin-top: 10px; ">
+        <a href="{% url 'add_to_favorites' book.id %}">Add to Favorites</a>
+        <a href="{% url 'remove_from_favorites' book.id %}">Remove from Favorites</a>
+    </div>
 
 </div>
 {% endblock content %}

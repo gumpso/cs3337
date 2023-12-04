@@ -16,4 +16,11 @@
 
 {% block content %}
    <h1 align="center">Welcome to Book Exchange!</h1>
+    {% if user.is_authenticated %}
+      <p>Thank you for using our book exchange system.</p>
+      <p>Feel free to look around!</p>
+    {% else %}
+      <p> Please login to gain access to books!</p>
+      <a href="{% url 'login' %}?next=/">Login</a>
+    {% endif %}
 {% endblock content %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block sidenav %}
    <!-- This assumes that 'item_list' is passed to the template from the view -->
    {% for item in item_list %}
@@ -20,7 +20,7 @@
 
     <!-- Displaying search results -->
     {% if books %}
-        <div>
+        <div align="center">
             <p>Found {{ books.count }} book(s) matching "{{ query }}":</p>
             <ul>
                 {% for book in books %}
@@ -32,7 +32,7 @@
                         <p><a href="{{ book.web }}">More Info</a></p>
                         <!-- Display book image if available -->
                         {% if book.picture %}
-                            <img src="{{ book.picture.url }}" alt="{{ book.name }}">
+                            <img src="{% static book.pic_path %}" height="60" width="60" alt=""/>
                         {% endif %}
                     </li>
                 {% endfor %}
