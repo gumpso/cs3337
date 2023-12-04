@@ -15,7 +15,7 @@
 {% endblock sidenav %}
 
 {% block content %}
-<h1 align="center">My Favorited Books</h1>
+<h1 align="center">My Favorite Books</h1>
 
 <table align="center" border="2" width="400">
     <th>
@@ -38,7 +38,7 @@
              {{ favorite.price }}
          </td>
          <td align="center">
-              <img src="{% static favorite.pic_path %}" height="60" width="60" alt="" />
+              <img src="{% static book.pic_path %}" height="60" width="60" alt="" />
          </td>
      </tr>
    {% endfor %}

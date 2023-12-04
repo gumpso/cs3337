@@ -25,14 +25,12 @@ SECRET_KEY = 'django-insecure-ggy=qy#=k)d3#ikmext4=h30u%8%-$u2)=cq0-)^nux*upkro0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-import os
-
-ALLOWED_HOSTS = ['tjwl.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [#
     'bookMng.apps.BookmngConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -115,7 +113,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-#
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -128,5 +126,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'bookEx/static')
+    os.path.join(BASE_DIR, 'bookEx/static')# Path: bookEx/bookEx/settings.py
 ]
