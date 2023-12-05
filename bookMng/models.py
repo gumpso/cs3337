@@ -63,3 +63,9 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s favorite: {self.book.name}"
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class CartItem(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)

@@ -40,6 +40,7 @@
                 <th>Book Picture</th>
                 <th>Book Poster</th>
                 <th>Book Post Time</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +52,9 @@
                 </td>
                 <td>{{ book.username }}</td>
                 <td>{{ book.publishdate }}</td>
+                <td>
+                    <a href="{% url 'add_to_cart' book.id %}">Add to Cart</a>
+                </td>
             </tr>
         </tbody>
     </table>

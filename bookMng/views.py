@@ -146,7 +146,12 @@ class Register(CreateView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect(self.success_url)
-
+@login_required
+def add_to_cart(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    CartItem.objects.get_or_create(book=book, cart=cart)
+    return redirect('book_detail', book_id=book_id)
 @login_required(login_url=reverse_lazy('login'))
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)

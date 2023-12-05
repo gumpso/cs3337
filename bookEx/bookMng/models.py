@@ -29,7 +29,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:50]
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+class CartItem(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 class Rating(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='ratings')
     user = models.ForeignKey(User, on_delete=models.CASCADE,unique=True)
