@@ -2,11 +2,15 @@ from django.urls import path
 from . import views
 from .views import add_to_favorites, remove_from_favorites, view_favorites
 from .views import add_to_cart
+from .views import view_cart
 
 
 
 urlpatterns = [
     path('add_to_cart/<int:book_id>/', add_to_cart, name='add_to_cart'),
+    path('cart/', view_cart, name='view_cart'),
+
+
 
     path('', views.index, name='index'),
     path('aboutus', views.aboutus, name='aboutus'),

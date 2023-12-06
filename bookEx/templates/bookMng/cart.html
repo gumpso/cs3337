@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+   Shopping Cart
+{% endblock title %}
+
+{% block content %}
+<h1 align="center">Shopping Cart</h1>
+
+<table align="center" border="2" width="400">
+    <th>
+        Book Name
+    </th>
+    <th>
+        Book Price
+    </th>
+    <th>
+        Book Picture
+    </th>
+    {% for item in cart_items %}
+     <tr>
+         <td>
+             {{ item.book.name }}
+         </td>
+         <td>
+             {{ item.book.price }}
+         </td>
+         <td align="center">
+              <img src="{{item.book.picture.url|cut:"/bookEx"}}" height="60" width="60" alt="" />
+         </td>
+     </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

@@ -2,7 +2,13 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.db.models import Count
+# from django.db.models import Count
 
+# Get the user_ids with duplicate entries
+duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
+
+# Delete the duplicate entries
+Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
 
 class MainMenu(models.Model):
     item = models.CharField(max_length=200, unique=True)
@@ -63,3 +69,9 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s favorite: {self.book.name}"
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class CartItem(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)

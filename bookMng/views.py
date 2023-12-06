@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Avg
-from .models import MainMenu, Book, Comment, Rating, Favorite
+from .models import MainMenu, Book, Comment, Rating, Favorite, Cart, CartItem
 from .forms import BookForm, CommentForm, RatingForm
 from django.contrib.auth import get_user_model
 from django.db.models import Count
@@ -30,6 +30,7 @@ def search_books(request):
     })
 
 def index(request):
+
     return render(request,
                   'bookMng/index.html',
                   {
@@ -70,9 +71,17 @@ def postbook(request):
                       'submitted': submitted
                   }
                   )
-
+from django.db.models import Count
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
+        # Get the user_ids with duplicate entries
+    duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
+     # Extract only the user_id values from the duplicate_user_ids queryset
+    duplicate_user_ids = duplicate_user_ids.values_list('user_id', flat=True)
+
+    # Delete the duplicate entries
+    Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
+    
     books = Book.objects.all()
     for b in books:
         b.pic_path = b.picture.url[14:]
@@ -83,9 +92,17 @@ def displaybooks(request):
                       'books': books
                   }
                   )
-
+from django.db.models import Count
 @login_required(login_url=reverse_lazy('login'))
 def mybooks(request):
+        # Get the user_ids with duplicate entries
+    duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
+
+    # Delete the duplicate entries
+    Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
+    book = get_object_or_404(Book, id=book_id)
+    comments = Comment.objects.filter(book=book)  # Fetch comments for the book
+    new_comment = None
     books = Book.objects.filter(username=request.user)
     for b in books:
         b.pic_path = b.picture.url[14:]
@@ -99,9 +116,19 @@ def mybooks(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def book_detail(request, book_id):
+    from django.db.models import Count
+
+    # Get the user_ids with duplicate entries
+    duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
+
+    # Delete the duplicate entries
+    Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
     book = get_object_or_404(Book, id=book_id)
     comments = Comment.objects.filter(book=book)  # Fetch comments for the book
     new_comment = None
+    
+
+
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
@@ -149,8 +176,16 @@ class Register(CreateView):
 @login_required
 def add_to_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    """cart, created = Cart.objects.filter(user=request.user) """
+    carts = Cart.objects.filter(user=request.user)
+    if carts.count() > 1:
+        for cart in carts[1:]:
+            cart.delete()
+    cart = carts.first()
+    if not cart:
+        cart = Cart.objects.create(user=request.user)
     CartItem.objects.get_or_create(book=book, cart=cart)
+    return redirect('view_cart')
     return redirect('book_detail', book_id=book_id)
 @login_required(login_url=reverse_lazy('login'))
 def book_detail(request, book_id):
@@ -231,6 +266,16 @@ def requestbook(request):
                       'item_list': MainMenu.objects.all()
                   }
                   )
+
+@login_required
+def view_cart(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = CartItem.objects.filter(cart=cart)
+    return render(request, 'bookMng/cart.html', {
+        'item_list': MainMenu.objects.all(),
+        'cart_items': cart_items
+    })               
+
 
 @login_required(login_url=reverse_lazy('login'))
 def user_detail(request, user_id):
