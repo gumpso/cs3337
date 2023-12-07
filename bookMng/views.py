@@ -99,9 +99,9 @@ def mybooks(request):
     duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
 
     # Delete the duplicate entries
-    Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
-    book = get_object_or_404(Book, id=book_id)
-    comments = Comment.objects.filter(book=book)  # Fetch comments for the book
+    # Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
+    # book = get_object_or_404(Book, id=book_id)
+    # comments = Comment.objects.filter(book=book)  # Fetch comments for the book
     new_comment = None
     books = Book.objects.filter(username=request.user)
     for b in books:
@@ -122,7 +122,7 @@ def book_detail(request, book_id):
     duplicate_user_ids = Rating.objects.values('user_id').annotate(count=Count('user_id')).filter(count__gt=1)
 
     # Delete the duplicate entries
-    Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
+    # Rating.objects.filter(user_id__in=duplicate_user_ids).delete()
     book = get_object_or_404(Book, id=book_id)
     comments = Comment.objects.filter(book=book)  # Fetch comments for the book
     new_comment = None
